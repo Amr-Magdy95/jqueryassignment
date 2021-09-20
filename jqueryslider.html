@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HTML 5 Boilerplate</title>
+    <style>
+        #slider{
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            margin: 30px auto;
+        }
+        
+        #slider img{
+            width: 600px;
+            height: 400px;
+            float: left;
+            display: none;
+        }
+
+        #button-wrapper{
+            text-align: center;
+        }
+
+        button{
+            margin: 20px 200px;
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 28px;
+            padding: 20px;
+            width: 200px;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        #next-button{
+            background-color: #4CAF50;
+        }
+
+        #prev-button{
+            background-color: #f44336;
+        }
+
+        button span {
+            cursor:pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        #prev-button span:after {
+            content: '\00AB';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: -50px;
+            transition: 0.5s;
+        }
+
+        #prev-button:hover span {
+            padding-left: 25px;
+            }
+
+        #prev-button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        #next-button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+            }
+
+        #next-button span:after {
+            content: '\00bb';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        #next-button:hover span {
+            padding-right: 25px;
+        }
+
+        #next-button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="slider">
+        <img id="1" src="./images/1.jpg" alt="">
+        <img id="2" src="./images/2.jpg" alt="">
+        <img id="3" src="./images/3.jpg" alt="">
+    </div>
+
+    <div id="button-wrapper">
+        <button id="prev-button" onclick="prev()"> <span>Prev</span> </button>
+        <button id="next-button" onclick="next()"><span>Next</span> </button>
+    </div>
+    <script src="./javascript/jquery-3.6.0.min.js"></script>
+    <script>
+        let sliderInt = 1;
+        let sliderNext = 2;
+        let loop;
+        $(document).ready( function(){
+            $("#slider img#1").fadeIn(300);
+            startSlider();
+        })
+
+        function startSlider(){
+            let countImages = document.querySelectorAll("#slider img").length;
+            loop = setInterval(() => {
+                $("#slider img").fadeOut(300);
+                $("#slider img#" + sliderNext).fadeIn(300);
+                sliderInt = sliderNext;
+                sliderNext = (sliderNext + 1);
+                if(sliderNext > countImages){ sliderNext = 1; sliderInt =1;} 
+            }, 3000);
+
+
+        }
+
+        function prev(){
+            let newSlide = sliderInt - 1;
+            showSlide(newSlide);
+        }
+        function next(){
+            let newSlide = sliderInt + 1;
+            showSlide(newSlide);
+        }
+
+        function showSlide(id)
+        {
+            stopLoop();
+            let countImages = document.querySelectorAll("#slider img").length;
+            if (id > countImages){
+                id = 1;
+            }else if( id < 1){
+                id = countImages;
+            }
+
+            $("#slider img").fadeOut(300);
+            $("#slider img#" + id).fadeIn(300);
+
+            sliderInt = id;
+            sliderNext = id + 1;
+            startSlider();
+            
+        }
+
+        function stopLoop(){
+            window.clearInterval(loop);
+        }
+        </script>
+  </body>
+</html>
